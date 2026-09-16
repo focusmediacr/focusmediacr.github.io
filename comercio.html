@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Comercio — Focus Media</title>
+<meta name="description" content="Focus Media · Propuestas audiovisuales · Costa Rica">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-brand" href="index.html"><img id="nav-logo-img" src="" alt="Focus Media" /><span class="nav-logo-text">FOCUS <span>MEDIA</span></span></a>
+  <div class="nav-links">
+    <a class="nav-btn" id="nav-index"    href="index.html">Inicio</a>
+    <a class="nav-btn" id="nav-comercio" href="comercio.html">Comercio</a>
+    <a class="nav-btn" id="nav-eventos"  href="eventos.html">Eventos</a>
+  </div>
+</nav>
+
+<main class="section active">
+  <div class="page-header">
+    <span class="eyebrow" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);opacity:.8;display:block;margin-bottom:12px">Contenido para tu negocio</span>
+    <h1>Planes de contenido mensual</h1>
+    <p>Elegí el plan que mejor se ajusta a tus objetivos o armá el tuyo a medida.</p>
+  </div>
+
+  <div class="tabs-wrap" id="comercio-tabs">
+    <button class="tab-btn active" onclick="switchTab('video',this)" id="tb-video">Solo Video</button>
+    <button class="tab-btn"        onclick="switchTab('foto',this)"  id="tb-foto">Video + Fotografía</button>
+    <button class="tab-btn"        onclick="switchTab('builder',this)" id="tb-builder">A Medida</button>
+  </div>
+
+  <!-- TAB: Solo Video -->
+  <div class="tab-panel active" id="tp-video">
+    <div class="plans-outer">
+      <div class="plans-grid" id="grid-video"></div>
+    </div>
+    <p class="plans-nota" id="nota-video"></p>
+  </div>
+
+  <!-- TAB: Video + Foto -->
+  <div class="tab-panel" id="tp-foto">
+    <div class="plans-outer">
+      <div class="plans-grid" id="grid-foto"></div>
+    </div>
+    <p class="plans-nota" id="nota-foto"></p>
+  </div>
+
+  <!-- TAB: Builder -->
+  <div class="tab-panel" id="tp-builder">
+    <div class="builder-head">
+      <h2>Armá tu plan</h2>
+      <p>Ajustá la cantidad de cada servicio. Los precios mostrados son à la carte.</p>
+    </div>
+    <div class="builder-grid" id="builder-sliders"></div>
+    <div class="tip-wrap"><div class="tip-box" id="tip-box"></div></div>
+  </div>
+
+  <!-- TIPOS DE CONTENIDO -->
+  <div class="types-section">
+    <div class="types-title">¿Qué incluye cada tipo de contenido?</div>
+    <div class="types-sub">Todo lo que producimos está diseñado para funcionar en Instagram, TikTok y Meta Ads.</div>
+    <div class="types-grid" id="types-grid"></div>
+  </div>
+
+  <div class="page-footer">
+    <p>
+      Focus Media · <a href="https://focusmedia.framer.website" target="_blank">focusmedia.framer.website</a><br>
+      Precios en colones costarricenses. Transporte incluido dentro del GAM. Propuesta válida 30 días.
+    </p>
+  </div>
+
+<!-- ══════════════════════════════════════════════════════
+     SECCIÓN: EVENTOS
+══════════════════════════════════════════════════════════ -->
+</main>
+
+<div class="sticky-footer" id="sticky">
+  <div class="sf-total">
+    <div class="sf-label">Total</div>
+    <div class="sf-amount" id="sf-amount">—</div>
+    <div class="sf-sub" id="sf-sub"></div>
+  </div>
+  <div class="sf-actions">
+    <label class="iva-wrap" id="iva-wrap">
+      <input type="checkbox" class="iva-check" id="iva-check" onchange="toggleIva()">
+      <span>+ IVA (13%)</span>
+    </label>
+    <button class="img-btn" id="img-btn" onclick="generateQuoteImage()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+        <polyline points="21 15 16 10 5 21"/>
+      </svg>
+      Generar imagen
+    </button>
+    <a class="wa-btn" id="wa-btn" href="#" target="_blank">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+        <path d="M12 0C5.373 0 0 5.373 0 12c0 2.117.549 4.105 1.514 5.83L0 24l6.335-1.652A11.954 11.954 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.003-1.37l-.359-.213-3.759.98.999-3.648-.234-.374A9.782 9.782 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/>
+      </svg>
+      Consultar por WhatsApp
+    </a>
+  </div>
+</div>
+
+
+<script src="assets/app.js"></script>
+</body>
+</html>
