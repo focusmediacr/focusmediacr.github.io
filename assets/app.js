@@ -576,7 +576,7 @@ function generateQuoteImage(){
     priceBase = selectedPlan.price;
     ivaAmt    = ivaEnabled ? Math.round(priceBase*0.13) : 0;
     priceTotal= priceBase + ivaAmt;
-    priceLabel= ivaEnabled ? '/mes + IVA' : '/mes';
+    priceLabel= '/mes';
   } else if(currentSection==='eventos' && selectedEvento){
     planName   = selectedEvento.name;
     const tMap = {foto:'Solo Fotografía', video:'Solo Video', completa:'Cobertura Completa'};
@@ -650,32 +650,35 @@ function generateQuoteImage(){
   hline(y); y += 100;
 
   /* ── precio (inline con /mes) ── */
-  ctx.textAlign = 'center';
-  if(priceLabel){
-    // Draw price + label side by side, centered together
-    ctx.font = '300 108px "Cormorant Garamond", serif';
-    const priceW = ctx.measureText(fmt(priceTotal)).width;
-    ctx.font = '300 38px "DM Sans", sans-serif';
-    const labelW = ctx.measureText(' '+priceLabel).width;
-    const totalW = priceW + labelW;
-    const startX = W/2 - totalW/2;
+  ctx.textAlign = 'left';
+  ctx.fillStyle = ACCENT;
+  ctx.font = '300 108px "Cormorant Garamond", serif';
+  const priceW = ctx.measureText(fmt(priceTotal)).width;
 
-    ctx.textAlign = 'left';
+  if(priceLabel){
+    ctx.font = '300 34px "DM Sans", sans-serif';
+    const labelW = ctx.measureText(priceLabel).width;
+    const gap = 12;
+    const blockW = priceW + gap + labelW;
+    const startX = W/2 - blockW/2;
+
+    // Big price
     ctx.fillStyle = ACCENT;
     ctx.font = '300 108px "Cormorant Garamond", serif';
     ctx.fillText(fmt(priceTotal), startX, y);
 
+    // /mes — baseline aligned to bottom-third of price (y - 24 feels like bottom-right subscript)
     ctx.fillStyle = DIM;
-    ctx.font = '300 38px "DM Sans", sans-serif';
-    ctx.fillText(' '+priceLabel, startX + priceW, y - 8);
-    ctx.textAlign = 'center';
+    ctx.font = '300 34px "DM Sans", sans-serif';
+    ctx.fillText(priceLabel, startX + priceW + gap, y - 24);
     y += 28;
   } else {
     ctx.fillStyle = ACCENT;
     ctx.font = '300 108px "Cormorant Garamond", serif';
-    ctx.fillText(fmt(priceTotal), W/2, y);
+    ctx.fillText(fmt(priceTotal), W/2 - priceW/2, y);
     y += 28;
   }
+  ctx.textAlign = 'center';
 
   /* ── desglose IVA ── */
   if(ivaEnabled && ivaAmt>0 && currentSection==='comercio'){
