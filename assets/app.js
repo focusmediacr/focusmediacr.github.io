@@ -698,8 +698,9 @@ function generateQuoteImage(){
   }
 
   /* ── servicios incluidos ── */
+  var featLines = [];
+
   if(currentSection==='comercio' && selectedPlan){
-    var featLines = [];
     if(selectedPlan.type !== 'builder'){
       var planData = (selectedPlan.type==='video' ? FM.planesVideo : FM.planesFoto).find(function(p){ return p.name===selectedPlan.name; });
       if(planData){
@@ -712,22 +713,37 @@ function generateQuoteImage(){
         featLines.push(builderVals[c.key] + ' ' + c.label);
       });
     }
-    if(featLines.length){
-      y += 50;
-      hline(y); y += 60;
-      ctx.fillStyle = ACCENT;
-      ctx.font = '500 20px "DM Sans", sans-serif';
-      ctx.letterSpacing = '4px';
-      ctx.fillText('I N C L U Y E', W/2, y);
-      ctx.letterSpacing = '0px';
-      y += 52;
-      featLines.forEach(function(fl){
-        ctx.fillStyle = 'rgba(255,255,255,0.82)';
-        ctx.font = '300 30px "DM Sans", sans-serif';
-        ctx.fillText(fl, W/2, y);
-        y += 48;
-      });
+  }
+
+  if(currentSection==='eventos' && selectedEvento){
+    var evData = FM.eventos.find(function(e){ return e.id===selectedEvento.id; });
+    if(evData && evData.tracks[selectedEvento.track]){
+      var meta = evData.tracks[selectedEvento.track].meta;
+      meta.split(' · ').forEach(function(s){ if(s.trim()) featLines.push(s.trim()); });
     }
+    selectedAddons.forEach(function(id){
+      var a = FM.addons.find(function(x){ return x.id===id; });
+      if(!a) return;
+      if(a.id==='cc') featLines.push('Content Creator (' + ccHoursVal + 'h)');
+      else featLines.push(a.name);
+    });
+  }
+
+  if(featLines.length){
+    y += 50;
+    hline(y); y += 60;
+    ctx.fillStyle = ACCENT;
+    ctx.font = '500 20px "DM Sans", sans-serif';
+    ctx.letterSpacing = '4px';
+    ctx.fillText('I N C L U Y E', W/2, y);
+    ctx.letterSpacing = '0px';
+    y += 52;
+    featLines.forEach(function(fl){
+      ctx.fillStyle = 'rgba(255,255,255,0.82)';
+      ctx.font = '300 30px "DM Sans", sans-serif';
+      ctx.fillText(fl, W/2, y);
+      y += 48;
+    });
   }
 
   /* ── footer ── */
