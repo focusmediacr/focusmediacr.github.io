@@ -374,6 +374,14 @@ function renderEventoTracks(){
   document.getElementById('ev-subtitle').textContent = ev.sub;
   document.getElementById('ev-tracks').innerHTML = Object.entries(ev.tracks).map(([track,data])=>{
     const isSel = selectedTrack === track;
+    let savingsBadge = '';
+    if(track === 'completa' && ev.tracks.foto && ev.tracks.video){
+      const separated = ev.tracks.foto.price + ev.tracks.video.price;
+      const saved = separated - data.price;
+      if(saved > 0){
+        savingsBadge = `<div class="etc-savings">Ahorrás ${fmt(saved)} vs. comprar por separado</div>`;
+      }
+    }
     return `
     <div class="ev-track-card${isSel?' sel':''}" onclick="selectTrack('${track}')">
       <div class="ev-check"></div>
@@ -381,6 +389,7 @@ function renderEventoTracks(){
       <div class="etc-name">${TRACK_LABELS[track]}</div>
       <div class="etc-price">${fmt(data.price)}</div>
       <div class="etc-meta">${data.meta}</div>
+      ${savingsBadge}
     </div>`;
   }).join('');
 }
