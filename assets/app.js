@@ -521,7 +521,7 @@ function updateFooter(){
   sfAmount.innerHTML = `${fmt(total)}<span style="font-size:13px;font-weight:300;color:var(--muted);margin-left:3px">/mes</span>`;
 
   if(selectedPlan.type==='builder'){
-    sfSub.textContent = ivaEnabled ? `IVA 13% incluido (${fmt(iva)})` : 'sin IVA';
+    sfSub.textContent = ivaEnabled ? `base ${fmt(base)} + IVA ${fmt(iva)}` : 'sin IVA';
     const items = BUILDER_CONFIG
       .filter(c=>builderVals[c.key]>0)
       .map(c=>`  • ${c.label}: ${builderVals[c.key]} (${fmt(builderVals[c.key]*FM.unit[c.key])})`);
@@ -529,7 +529,7 @@ function updateFooter(){
     const msg = `Hola, armé un plan a medida en Focus Media:\n${items.join('\n')}\n\n*Total: ${fmt(total)}/mes*${ivaNote}\n\n¿Podemos conversar?`;
     waBtn.href = waUrl(msg);
   } else {
-    sfSub.textContent = ivaEnabled ? `IVA 13% incluido (${fmt(iva)})` : 'sin IVA';
+    sfSub.textContent = ivaEnabled ? `base ${fmt(base)} + IVA ${fmt(iva)}` : 'sin IVA';
     const plan = (selectedPlan.type==='video'?FM.planesVideo:FM.planesFoto).find(p=>p.name===selectedPlan.name);
     const feats = plan ? Object.entries(plan.comp).map(([k,v])=>`  • ${v} ${FM.labels[k]}`).join('\n') : '';
     const ivaNote = ivaEnabled ? `\n_Incluye IVA ${fmt(iva)}_` : ' _(sin IVA)_';
