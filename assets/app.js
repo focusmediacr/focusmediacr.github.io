@@ -719,7 +719,11 @@ function generateQuoteImage(){
     var evData = FM.eventos.find(function(e){ return e.id===selectedEvento.id; });
     if(evData && evData.tracks[selectedEvento.track]){
       var meta = evData.tracks[selectedEvento.track].meta;
-      meta.split(' · ').forEach(function(s){ if(s.trim()) featLines.push(s.trim()); });
+      meta.split(' · ').forEach(function(s, i){
+        if(!s.trim()) return;
+        if(i===0 && /h/.test(s)) featLines.push(s.trim() + ' de cobertura');
+        else featLines.push(s.trim());
+      });
     }
     selectedAddons.forEach(function(id){
       var a = FM.addons.find(function(x){ return x.id===id; });
