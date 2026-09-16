@@ -32,9 +32,9 @@ const FM = {
       name: "Pequeño",
       sub: "Cumpleaños · Baby shower · Graduación",
       tracks: {
-        foto:     { price:100000, meta:"4–5h · ~40 fotos editadas · Galería digital" },
-        video:    { price: 60000, meta:"4–5h · Highlight 45s–1min" },
-        completa: { price:150000, meta:"4–5h · ~40 fotos · Highlight 45s–1min · Galería digital" },
+        foto:     { price:100000, meta:"4–5h de cobertura · ~40 fotos editadas · Galería digital" },
+        video:    { price: 60000, meta:"4–5h de cobertura · Highlight 45s–1min" },
+        completa: { price:150000, meta:"4–5h de cobertura · ~40 fotos · Highlight 45s–1min · Galería digital" },
       }
     },
     {
@@ -43,31 +43,31 @@ const FM = {
       name: "Quinceañero",
       sub: "Ceremonia · Fiesta · Sesión de festejada",
       tracks: {
-        foto:     { price:140000, meta:"6h · ~80 fotos editadas · Galería digital" },
-        video:    { price:100000, meta:"6h · Highlight 1.5–2min" },
-        completa: { price:220000, meta:"6h · ~80 fotos · Highlight 1.5–2min · Galería digital" },
+        foto:     { price:140000, meta:"6h de cobertura · ~80 fotos editadas · Galería digital" },
+        video:    { price:100000, meta:"6h de cobertura · Highlight 1.5–2min" },
+        completa: { price:220000, meta:"6h de cobertura · ~80 fotos · Highlight 1.5–2min · Galería digital" },
       }
     },
     {
       id: "boda-2h",
       icon: "💍",
       name: "Boda",
-      sub: "Ceremonia + 2h Fiesta",
+      sub: "Ceremonia + Fiesta (5–6h)",
       tracks: {
-        foto:     { price:200000, meta:"~7h · ~90 fotos editadas · Galería digital" },
-        video:    { price:150000, meta:"~7h · Highlight 2–3min" },
-        completa: { price:300000, meta:"~7h · ~90 fotos · Highlight 2–3min · Galería digital" },
+        foto:     { price:200000, meta:"5–6h de cobertura · ~90 fotos editadas · Galería digital" },
+        video:    { price:150000, meta:"5–6h de cobertura · Highlight 2–3min" },
+        completa: { price:300000, meta:"5–6h de cobertura · ~90 fotos · Highlight 2–3min · Galería digital" },
       }
     },
     {
       id: "boda-4h",
       icon: "💍",
       name: "Boda",
-      sub: "Ceremonia + 4h Fiesta",
+      sub: "Ceremonia + Fiesta (7–8h)",
       tracks: {
-        foto:     { price:230000, meta:"~9h · ~130 fotos editadas · Galería digital" },
-        video:    { price:180000, meta:"~9h · Highlight 3–5min" },
-        completa: { price:350000, meta:"~9h · ~130 fotos · Highlight 3–5min · Galería digital" },
+        foto:     { price:230000, meta:"7–8h de cobertura · ~130 fotos editadas · Galería digital" },
+        video:    { price:180000, meta:"7–8h de cobertura · Highlight 3–5min" },
+        completa: { price:350000, meta:"7–8h de cobertura · ~130 fotos · Highlight 3–5min · Galería digital" },
       }
     },
   ],
@@ -719,11 +719,7 @@ function generateQuoteImage(){
     var evData = FM.eventos.find(function(e){ return e.id===selectedEvento.id; });
     if(evData && evData.tracks[selectedEvento.track]){
       var meta = evData.tracks[selectedEvento.track].meta;
-      meta.split(' · ').forEach(function(s, i){
-        if(!s.trim()) return;
-        if(i===0 && /h/.test(s)) featLines.push(s.trim() + ' de cobertura');
-        else featLines.push(s.trim());
-      });
+      meta.split(' · ').forEach(function(s){ if(s.trim()) featLines.push(s.trim()); });
     }
     selectedAddons.forEach(function(id){
       var a = FM.addons.find(function(x){ return x.id===id; });
