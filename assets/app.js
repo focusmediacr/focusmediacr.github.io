@@ -518,7 +518,7 @@ function updateFooter(){
   const iva   = ivaEnabled ? Math.round(base * 0.13) : 0;
   const total = base + iva;
 
-  sfAmount.textContent = fmt(total);
+  sfAmount.innerHTML = `${fmt(total)}<span style="font-size:13px;font-weight:300;color:var(--muted);margin-left:3px">/mes</span>`;
 
   if(selectedPlan.type==='builder'){
     sfSub.textContent = ivaEnabled ? `base ${fmt(base)} + IVA ${fmt(iva)}` : 'Plan a medida · sin IVA';
@@ -529,7 +529,7 @@ function updateFooter(){
     const msg = `Hola, armé un plan a medida en Focus Media:\n${items.join('\n')}\n\n*Total: ${fmt(total)}/mes*${ivaNote}\n\n¿Podemos conversar?`;
     waBtn.href = waUrl(msg);
   } else {
-    sfSub.textContent = ivaEnabled ? `base ${fmt(base)} + IVA ${fmt(iva)}` : '/mes · sin IVA';
+    sfSub.textContent = ivaEnabled ? `base ${fmt(base)} + IVA ${fmt(iva)}` : 'sin IVA';
     const plan = (selectedPlan.type==='video'?FM.planesVideo:FM.planesFoto).find(p=>p.name===selectedPlan.name);
     const feats = plan ? Object.entries(plan.comp).map(([k,v])=>`  • ${v} ${FM.labels[k]}`).join('\n') : '';
     const ivaNote = ivaEnabled ? `\n_Incluye IVA ${fmt(iva)}_` : ' _(sin IVA)_';
@@ -649,22 +649,37 @@ function generateQuoteImage(){
 
   hline(y); y += 100;
 
-  /* ── precio ── */
-  ctx.fillStyle = ACCENT;
-  ctx.font = '300 108px "Cormorant Garamond", serif';
-  ctx.fillText(fmt(priceTotal), W/2, y);
-  y += 24;
-
+  /* ── precio (inline con /mes) ── */
+  ctx.textAlign = 'center';
   if(priceLabel){
+    // Draw price + label side by side, centered together
+    ctx.font = '300 108px "Cormorant Garamond", serif';
+    const priceW = ctx.measureText(fmt(priceTotal)).width;
+    ctx.font = '300 38px "DM Sans", sans-serif';
+    const labelW = ctx.measureText(' '+priceLabel).width;
+    const totalW = priceW + labelW;
+    const startX = W/2 - totalW/2;
+
+    ctx.textAlign = 'left';
+    ctx.fillStyle = ACCENT;
+    ctx.font = '300 108px "Cormorant Garamond", serif';
+    ctx.fillText(fmt(priceTotal), startX, y);
+
     ctx.fillStyle = DIM;
-    ctx.font = '300 26px "DM Sans", sans-serif';
-    ctx.fillText(priceLabel, W/2, y);
-    y += 42;
+    ctx.font = '300 38px "DM Sans", sans-serif';
+    ctx.fillText(' '+priceLabel, startX + priceW, y - 8);
+    ctx.textAlign = 'center';
+    y += 28;
+  } else {
+    ctx.fillStyle = ACCENT;
+    ctx.font = '300 108px "Cormorant Garamond", serif';
+    ctx.fillText(fmt(priceTotal), W/2, y);
+    y += 28;
   }
 
   /* ── desglose IVA ── */
   if(ivaEnabled && ivaAmt>0 && currentSection==='comercio'){
-    y += 24;
+    y += 16;
     ctx.fillStyle = 'rgba(201,161,99,0.55)';
     ctx.font = '300 24px "DM Sans", sans-serif';
     ctx.fillText('Base '+fmt(priceBase)+'  +  IVA '+fmt(ivaAmt), W/2, y);
@@ -677,6 +692,39 @@ function generateQuoteImage(){
     ctx.fillStyle = DIM;
     ctx.font = '300 24px "DM Sans", sans-serif';
     addonLines.forEach(function(al){ ctx.fillText(al, W/2, y); y+=38; });
+  }
+
+  /* ── servicios incluidos ── */
+  if(currentSection==='comercio' && selectedPlan){
+    var featLines = [];
+    if(selectedPlan.type !== 'builder'){
+      var planData = (selectedPlan.type==='video' ? FM.planesVideo : FM.planesFoto).find(function(p){ return p.name===selectedPlan.name; });
+      if(planData){
+        Object.entries(planData.comp).forEach(function([k,v]){
+          featLines.push(v + ' ' + (FM.labels[k]||k));
+        });
+      }
+    } else {
+      BUILDER_CONFIG.filter(function(c){ return builderVals[c.key]>0; }).forEach(function(c){
+        featLines.push(builderVals[c.key] + ' ' + c.label);
+      });
+    }
+    if(featLines.length){
+      y += 50;
+      hline(y); y += 60;
+      ctx.fillStyle = ACCENT;
+      ctx.font = '500 20px "DM Sans", sans-serif';
+      ctx.letterSpacing = '4px';
+      ctx.fillText('I N C L U Y E', W/2, y);
+      ctx.letterSpacing = '0px';
+      y += 52;
+      featLines.forEach(function(fl){
+        ctx.fillStyle = 'rgba(255,255,255,0.82)';
+        ctx.font = '300 30px "DM Sans", sans-serif';
+        ctx.fillText(fl, W/2, y);
+        y += 48;
+      });
+    }
   }
 
   /* ── footer ── */
