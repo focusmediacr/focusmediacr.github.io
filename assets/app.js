@@ -378,8 +378,9 @@ function renderEventoTracks(){
     if(track === 'completa' && ev.tracks.foto && ev.tracks.video){
       const separated = ev.tracks.foto.price + ev.tracks.video.price;
       const saved = separated - data.price;
+      const pct = Math.round(saved / separated * 100);
       if(saved > 0){
-        savingsBadge = `<div class="etc-savings">Ahorrás ${fmt(saved)} vs. comprar por separado</div>`;
+        savingsBadge = `<div class="etc-savings">Ahorrás ${pct}% vs. comprar por separado</div>`;
       }
     }
     return `
