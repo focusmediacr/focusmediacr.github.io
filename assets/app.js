@@ -380,7 +380,10 @@ function renderEventoTracks(){
       const saved = separated - data.price;
       const pct = Math.round(saved / separated * 100);
       if(saved > 0){
-        savingsBadge = `<div class="etc-savings">Ahorrás ${pct}% vs. comprar por separado</div>`;
+        savingsBadge = `<div class="savings-strip" style="margin-top:12px;margin-bottom:0">
+          <span class="alacarte">Por separado ${fmt(separated)}</span>
+          <span class="saving">Ahorrás ${pct}%</span>
+        </div>`;
       }
     }
     return `
